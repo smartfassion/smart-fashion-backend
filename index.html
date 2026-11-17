@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>Smart Fashion &amp; Gadgets</title>
+<style>
+:root{--ink:#172238;--muted:#687589;--brand:#6857ed;--line:#e7ebf2;--bg:#f5f7fb}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Noto Sans Bengali",sans-serif}
+button,input,select,textarea{font:inherit}button{cursor:pointer;border:0}
+.top{background:#101827;color:#fff;text-align:center;padding:9px;font-size:13px}
+header{background:white;position:sticky;top:0;z-index:5;border-bottom:1px solid var(--line)}
+.nav{max-width:1150px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:12px}
+.logo{font-weight:850;font-size:17px;display:flex;align-items:center;gap:10px}
+.mark{background:linear-gradient(135deg,#6857ed,#19b6a4);color:white;border-radius:12px;padding:10px 14px}
+.navlinks{margin-left:auto;display:flex;gap:20px}.navlinks a{text-decoration:none;color:#596579;font-size:14px}
+.navbtn{background:#efedff;color:#5d4be0;border-radius:10px;padding:10px 13px;font-weight:700}
+.hero,.wrap{max-width:1150px;margin:25px auto;padding:0 20px}
+.heroBox{border-radius:24px;background:linear-gradient(115deg,#151e35,#292c58 60%,#157f83);color:white;padding:45px;display:flex;align-items:center;justify-content:space-between;min-height:260px}
+.hero h1{font-size:clamp(30px,5vw,48px);line-height:1.2;margin:10px 0}.hero p{color:#dce4f3;max-width:570px;line-height:1.8}
+.heroArt{font-size:100px}.primary{background:linear-gradient(110deg,#6857ed,#8978ff);color:#fff;padding:12px 18px;border-radius:11px;font-weight:800}
+.head{margin:30px 0 15px}.head h2{margin:0}.head p,.hint{color:var(--muted);font-size:13px}
+.tools{display:flex;gap:10px;margin:15px 0;flex-wrap:wrap}.tools input{flex:1;min-width:190px}
+.field,.tools input,.tools select{padding:12px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{background:white;border:1px solid var(--line);border-radius:30px;padding:9px 14px}
+.chip.active{background:#efedff;color:#5d4be0}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px}
+.product{background:white;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.visual{height:150px;background:linear-gradient(135deg,#f1f2ff,#e8faf6);display:grid;place-items:center;font-size:62px;position:relative}
+.stock{position:absolute;top:10px;left:10px;background:#e2f8ec;color:#148451;padding:5px 9px;border-radius:20px;font-size:11px}
+.pbody{padding:14px}.pbody h3{margin:0 0 6px;font-size:16px}.desc{font-size:12px;color:var(--muted);min-height:35px}
+.price{font-size:21px;font-weight:850;margin:10px 0}.add{width:100%;background:#172238;color:white;padding:10px;border-radius:9px;font-weight:700}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.feature{background:#fff;padding:18px;border:1px solid var(--line);border-radius:14px}
+.feature b{display:block;margin:6px 0}.feature span{font-size:13px;color:var(--muted)}
+footer{background:#111a2b;color:#fff;margin-top:45px;padding:30px 20px}.foot{max-width:1150px;margin:auto}.foot p{color:#b8c2d2;font-size:13px}
+.float{position:fixed;right:18px;bottom:18px;background:#6857ed;color:white;border-radius:30px;padding:13px 17px;z-index:8}
+.panel,.modal{display:none;position:fixed;inset:0;background:#071020aa;z-index:20}.panel.open{display:flex;justify-content:flex-end}
+.drawer{background:white;width:min(440px,100%);height:100%;padding:20px;overflow:auto}
+.modal.open{display:grid;place-items:center;padding:15px}.modalbox{background:#fff;border-radius:16px;padding:22px;width:min(530px,100%);max-height:90vh;overflow:auto}
+.drawerHead{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:10px}
+.close{padding:8px 12px;border-radius:8px;background:#edf0f5}.cartrow{display:flex;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line)}
+.qty{display:flex;gap:8px;align-items:center}.qty button{padding:5px 9px;border-radius:6px;background:#edf0f5}
+.total{text-align:right;font-size:21px;font-weight:850;margin:17px 0}.form{display:grid;gap:10px}.field{width:100%}
+.adminrow{display:grid;grid-template-columns:1fr 120px;gap:10px;align-items:center;background:#f6f7fa;padding:9px;border-radius:9px;margin:8px 0}
+.adminrow input{width:100%;padding:9px;border:1px solid var(--line);border-radius:8px}
+@media(max-width:800px){.grid{grid-template-columns:repeat(2,1fr)}.navlinks{display:none}.heroBox{padding:28px}.heroArt{font-size:70px}.features{grid-template-columns:1fr}}
+@media(max-width:450px){.heroArt{display:none}.heroBox{padding:25px}.visual{height:125px}.pbody{padding:10px}.pbody h3{font-size:14px}}
+</style>
+</head>
+<body>
+<div class="top">স্মার্ট পছন্দ, সহজ কেনাকাটা</div>
+<header><div class="nav"><div class="logo"><span class="mark">S</span><span>Smart Fashion<br>&amp; Gadgets</span></div>
+<nav class="navlinks"><a href="#home">হোম</a><a href="#products">পণ্য</a><a href="#about">আমাদের সম্পর্কে</a></nav>
+<button class="navbtn" onclick="openAdmin()">Admin</button><button class="navbtn" onclick="openCart()">কার্ট (<span id="count">0</span>)</button></div></header>
+<section class="hero" id="home"><div class="heroBox"><div><small style="color:#9df0dc;font-weight:800">WELCOME TO OUR STORE</small>
+<h1>আপনার পছন্দের<br>ফ্যাশন ও গ্যাজেট</h1><p>নতুন কালেকশন, প্রয়োজনীয় গ্যাজেট এবং সহজ অনলাইন কেনাকাটা—সব এক জায়গায়।</p>
+<button class="primary" onclick="document.querySelector('#products').scrollIntoView({behavior:'smooth'})">পণ্য দেখুন →</button></div><div class="heroArt">🛍️</div></div></section>
+<section class="wrap" id="products"><div class="head"><h2>আমাদের পণ্য</h2><p>আপনার পছন্দের পণ্য খুঁজে নিন</p></div>
+<div class="tools"><input id="search" placeholder="পণ্যের নাম দিয়ে খুঁজুন..." oninput="render()">
+<select id="sort" onchange="render()"><option value="">ডিফল্ট</option><option value="low">দাম কম থেকে বেশি</option><option value="high">দাম বেশি থেকে কম</option></select></div>
+<div class="chips" id="chips"></div><div class="grid" id="productsGrid"></div></section>
+<section class="wrap" id="about"><div class="head"><h2>কেন আমাদের বেছে নেবেন?</h2><p>সহজ ও স্বচ্ছ কেনাকাটার অভিজ্ঞতা</p></div>
+<div class="features"><div class="feature">🚚<b>সহজ ডেলিভারি</b><span>ডেলিভারির তথ্য অর্ডারের আগে দেখানো হবে।</span></div>
+<div class="feature">🛡️<b>সহজ অর্ডার</b><span>অর্ডারের তথ্য যাচাই করে জমা দেওয়ার ব্যবস্থা।</span></div>
+<div class="feature">💬<b>কাস্টমার সাপোর্ট</b><span>যোগাযোগের তথ্য পরে যোগ করা যাবে।</span></div></div></section>
+<footer><div class="foot"><b>Smart Fashion &amp; Gadgets</b><p>আপনার অনলাইন শপিং গন্তব্য।</p></div></footer>
+<button class="float" onclick="openCart()">🛒 কার্ট <span id="floatCount">0</span></button>
+<div class="panel" id="cartPanel"><div class="drawer"><div class="drawerHead"><h2>তোমার কার্ট</h2><button class="close" onclick="closeCart()">বন্ধ</button></div>
+<div id="cartItems"></div><div class="total" id="total"></div><button class="primary" style="width:100%" onclick="openCheckout()">অর্ডারের তথ্য দাও</button>
+<p class="hint">এটি Demo Cart; বাস্তব অর্ডারের জন্য নিরাপদ Backend ও Order API যুক্ত করতে হবে।</p></div></div>
+<div class="modal" id="checkout"><div class="modalbox"><div class="drawerHead"><h2>অর্ডারের তথ্য</h2><button class="close" onclick="closeCheckout()">বন্ধ</button></div>
+<form class="form" id="orderForm"><input class="field" name="name" placeholder="আপনার নাম" required><input class="field" name="phone" placeholder="মোবাইল নম্বর" required>
+<select class="field" name="area"><option>ঢাকার ভিতরে</option><option>ঢাকার বাইরে</option></select><textarea class="field" name="address" placeholder="সম্পূর্ণ ঠিকানা" required></textarea>
+<button class="primary">Demo Order দেখুন</button></form><p class="hint">এখানে জমা দিলে বাস্তব অর্ডার বা পেমেন্ট হবে না।</p></div></div>
+<div class="modal" id="admin"><div class="modalbox"><div class="drawerHead"><h2>Admin Panel — Demo</h2><button class="close" onclick="closeAdmin()">বন্ধ</button></div>
+<p class="hint">প্রতিটি পণ্যের নিজের বিক্রয়মূল্য সেট করো। এই Demo-তে দাম শুধু এই Browser-এ সেভ হয়।</p><div id="adminList"></div>
+<button class="primary" style="width:100%;margin-top:12px" onclick="savePrices()">দাম সংরক্ষণ</button><p class="hint">বাস্তব Admin Panel-এর জন্য নিরাপদ Login ও Database প্রয়োজন।</p></div></div>
+<script>
+const base=[
+{id:"d1",name:"Wireless Headphone",desc:"দৈনন্দিন ব্যবহারের স্টাইলিশ হেডফোন।",price:1200,min:405,emoji:"🎧",cat:"Gadgets",stock:true},
+{id:"d2",name:"Smart Watch",desc:"আধুনিক ডিজাইনের স্মার্ট ঘড়ি।",price:1650,min:535,emoji:"⌚",cat:"Gadgets",stock:true},
+{id:"d3",name:"Fashion Backpack",desc:"প্রতিদিনের ব্যবহারের সুন্দর ব্যাগ।",price:950,min:475,emoji:"🎒",cat:"Fashion",stock:true},
+{id:"d4",name:"Classic Sunglasses",desc:"ফ্যাশনেবল সানগ্লাস।",price:650,min:405,emoji:"🕶️",cat:"Fashion",stock:true},
+{id:"d5",name:"Bluetooth Speaker",desc:"পোর্টেবল স্পিকার।",price:1350,min:535,emoji:"🔊",cat:"Gadgets",stock:false},
+{id:"d6",name:"Casual T-Shirt",desc:"আরামদায়ক ক্যাজুয়াল টি-শার্ট।",price:550,min:405,emoji:"👕",cat:"Fashion",stock:true},
+{id:"d7",name:"Phone Stand",desc:"মোবাইল রাখার স্ট্যান্ড।",price:350,min:300,emoji:"📱",cat:"Gadgets",stock:true},
+{id:"d8",name:"Travel Pouch",desc:"ছোট জিনিস রাখার পাউচ।",price:450,min:405,emoji:"🧳",cat:"Fashion",stock:true}
+];
+let products=base.map(p=>({...p,price:Number(localStorage.getItem("sf_"+p.id))||p.price})),cat="সব",cart=[];
+const $=id=>document.getElementById(id);
+const money=n=>"৳"+Number(n).toLocaleString("en-US");
+function render(){
+ $("chips").innerHTML=["সব","Fashion","Gadgets"].map(c=>`<button class="chip ${cat===c?'active':''}" onclick="cat='${c}';render()">${c==="সব"?"সব পণ্য":c}</button>`).join("");
+ let q=$("search").value.toLowerCase(),a=products.filter(p=>(cat==="সব"||p.cat===cat)&&p.name.toLowerCase().includes(q)),s=$("sort").value;
+ if(s==="low")a.sort((x,y)=>x.price-y.price);if(s==="high")a.sort((x,y)=>y.price-x.price);
+ $("productsGrid").innerHTML=a.length?a.map(p=>`<article class="product"><div class="visual">${p.emoji}<span class="stock" style="${p.stock?'':'background:#ffeded;color:#b22'}">${p.stock?'স্টকে আছে':'স্টক নেই'}</span></div><div class="pbody"><h3>${p.name}</h3><div class="desc">${p.desc}</div><div class="price">${money(p.price)}</div><button class="add" ${p.stock?'':'disabled style="opacity:.5"'} onclick="add('${p.id}')">${p.stock?'কার্টে যোগ করুন':'স্টক নেই'}</button></div></article>`).join(""):'<p>পণ্য পাওয়া যায়নি।</p>';
+}
+function add(id){let x=cart.find(p=>p.id===id);x?x.qty++:cart.push({id,qty:1});updateCart();openCart()}
+function updateCart(){let n=cart.reduce((s,x)=>s+x.qty,0);$("count").textContent=n;$("floatCount").textContent=n;
+ $("cartItems").innerHTML=cart.length?cart.map(x=>{let p=products.find(y=>y.id===x.id);return `<div class="cartrow"><div><b>${p.name}</b><br><small>${money(p.price)} × ${x.qty}</small></div><div class="qty"><button onclick="qty('${x.id}',-1)">−</button>${x.qty}<button onclick="qty('${x.id}',1)">+</button></div></div>`}).join(""):"কার্ট খালি";
+ $("total").textContent="মোট: "+money(cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0));
+}
+function qty(id,d){let x=cart.find(p=>p.id===id);x.qty+=d;if(x.qty<=0)cart=cart.filter(p=>p.id!==id);updateCart()}
+function openCart(){$("cartPanel").classList.add("open");updateCart()}function closeCart(){$("cartPanel").classList.remove("open")}
+function openCheckout(){if(!cart.length)return alert("আগে পণ্য কার্টে যোগ করো");$("checkout").classList.add("open")}
+function closeCheckout(){$("checkout").classList.remove("open")}
+$("orderForm").addEventListener("submit",e=>{e.preventDefault();alert("এটি Demo Order। বাস্তব অর্ডার Business Koro-তে পাঠানো হয়নি।");closeCheckout();closeCart()});
+function openAdmin(){$("adminList").innerHTML=products.map(p=>`<div class="adminrow"><span><b>${p.name}</b><br><small>Demo minimum: ${money(p.min)}</small></span><input id="v_${p.id}" type="number" min="${p.min}" value="${p.price}"></div>`).join("");$("admin").classList.add("open")}
+function closeAdmin(){$("admin").classList.remove("open")}
+function savePrices(){for(let p of products){let v=Number(document.getElementById("v_"+p.id).value);if(!v||v<p.min)return alert(p.name+": Demo minimum-এর নিচে দাম দেওয়া যাবে না");p.price=v;localStorage.setItem("sf_"+p.id,v)}render();closeAdmin();alert("Demo দাম সেভ হয়েছে")}
+window.render=render;window.add=add;window.qty=qty;window.openCart=openCart;window.closeCart=closeCart;window.openCheckout=openCheckout;window.closeCheckout=closeCheckout;window.openAdmin=openAdmin;window.closeAdmin=closeAdmin;window.savePrices=savePrices;
+$("cartPanel").addEventListener("click",e=>{if(e.target===$("cartPanel"))closeCart()});
+render();updateCart();
+
+// Render backend demo API: real orders/payments are not enabled.
+async function loadBackendProducts(){
+  try {
+    const response = await fetch("https://smart-fashion-backend.onrender.com/api/products");
+    if (!response.ok) throw new Error("Backend response: " + response.status);
+    const result = await response.json();
+    if (!Array.isArray(result.data)) throw new Error("Product data format is invalid");
+    products = result.data.map((p, i) => ({
+      id: String(p.id ?? ("api-" + i)),
+      name: String(p.name ?? "Product"),
+      desc: String(p.description ?? "পণ্যের বিস্তারিত পরে যোগ করা হবে।"),
+      price: Number(p.price) || 0,
+      min: 0,
+      emoji: p.category === "Fashion" ? "👕" : "🎧",
+      cat: p.category === "Fashion" ? "Fashion" : "Gadgets",
+      stock: p.inStock !== false
+    }));
+    render(); updateCart();
+    console.log("Render demo products loaded:", products.length);
+  } catch (error) {
+    console.warn("Render API unavailable; showing sample products.", error);
+  }
+}
+loadBackendProducts();
+</script>
+</body>
+</html>
