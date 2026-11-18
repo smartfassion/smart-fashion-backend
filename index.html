@@ -72,10 +72,18 @@ footer{background:#111a2b;color:#fff;margin-top:45px;padding:30px 20px}.foot{max
 <form class="form" id="orderForm"><input class="field" name="name" placeholder="আপনার নাম" required><input class="field" name="phone" placeholder="মোবাইল নম্বর" required>
 <select class="field" name="area"><option>ঢাকার ভিতরে</option><option>ঢাকার বাইরে</option></select><textarea class="field" name="address" placeholder="সম্পূর্ণ ঠিকানা" required></textarea>
 <button class="primary">Demo Order দেখুন</button></form><p class="hint">এখানে জমা দিলে বাস্তব অর্ডার বা পেমেন্ট হবে না।</p></div></div>
-<div class="modal" id="admin"><div class="modalbox"><div class="drawerHead"><h2>Admin Panel — Demo</h2><button class="close" onclick="closeAdmin()">বন্ধ</button></div>
-<p class="hint">প্রতিটি পণ্যের নিজের বিক্রয়মূল্য সেট করো। এই Demo-তে দাম শুধু এই Browser-এ সেভ হয়।</p><div id="adminList"></div>
-<button class="primary" style="width:100%;margin-top:12px" onclick="savePrices()">দাম সংরক্ষণ</button><p class="hint">বাস্তব Admin Panel-এর জন্য নিরাপদ Login ও Database প্রয়োজন।</p></div></div>
+<div class="modal" id="admin"><div class="modalbox"><div class="drawerHead"><h2>Admin Login</h2><button class="close" onclick="closeAdmin()">বন্ধ</button></div>
+<div id="adminLogin"><p class="hint">অনুমোদিত Admin Gmail ও Password দিয়ে প্রবেশ করো।</p><form class="form" onsubmit="adminLogin(event)"><input class="field" id="adminEmail" type="email" placeholder="Admin Gmail" autocomplete="username" required><input class="field" id="adminPassword" type="password" placeholder="Password" autocomplete="current-password" required><button class="primary">Login</button></form></div>
+<div id="adminTools" hidden><p class="hint" id="adminWho"></p><div id="adminList"></div><button class="primary" style="width:100%;margin-top:12px" onclick="savePrices()">দাম সংরক্ষণ</button><button class="close" style="margin-top:10px" onclick="adminLogout()">Logout</button></div>
+<p class="hint" id="adminMessage" role="status"></p></div></div>
+
+<!-- Firebase Authentication -->
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+
 <script>
+// @ts-nocheck
+// DEMO ONLY: এখানে কোনো Business Koro API secret বা private key রাখবে না।
 const base=[
 {id:"d1",name:"Wireless Headphone",desc:"দৈনন্দিন ব্যবহারের স্টাইলিশ হেডফোন।",price:1200,min:405,emoji:"🎧",cat:"Gadgets",stock:true},
 {id:"d2",name:"Smart Watch",desc:"আধুনিক ডিজাইনের স্মার্ট ঘড়ি।",price:1650,min:535,emoji:"⌚",cat:"Gadgets",stock:true},
@@ -86,7 +94,7 @@ const base=[
 {id:"d7",name:"Phone Stand",desc:"মোবাইল রাখার স্ট্যান্ড।",price:350,min:300,emoji:"📱",cat:"Gadgets",stock:true},
 {id:"d8",name:"Travel Pouch",desc:"ছোট জিনিস রাখার পাউচ।",price:450,min:405,emoji:"🧳",cat:"Fashion",stock:true}
 ];
-let products=base.map(p=>({...p,price:Number(localStorage.getItem("sf_"+p.id))||p.price})),cat="সব",cart=[];
+let products=base.map(p=>({...p})),cat="সব",cart=[];
 const $=id=>document.getElementById(id);
 const money=n=>"৳"+Number(n).toLocaleString("en-US");
 function render(){
@@ -105,17 +113,26 @@ function openCart(){$("cartPanel").classList.add("open");updateCart()}function c
 function openCheckout(){if(!cart.length)return alert("আগে পণ্য কার্টে যোগ করো");$("checkout").classList.add("open")}
 function closeCheckout(){$("checkout").classList.remove("open")}
 $("orderForm").addEventListener("submit",e=>{e.preventDefault();alert("এটি Demo Order। বাস্তব অর্ডার Business Koro-তে পাঠানো হয়নি।");closeCheckout();closeCart()});
-function openAdmin(){$("adminList").innerHTML=products.map(p=>`<div class="adminrow"><span><b>${p.name}</b><br><small>Demo minimum: ${money(p.min)}</small></span><input id="v_${p.id}" type="number" min="${p.min}" value="${p.price}"></div>`).join("");$("admin").classList.add("open")}
+const API_BASE="https://smart-fashion-backend.onrender.com";
+const firebaseConfig={apiKey:"AIzaSyA5OwM63Iuk1N06JVNL9yK-6zbrqKNEK28",authDomain:"rafi-website.firebaseapp.com",projectId:"rafi-website",storageBucket:"rafi-website.firebasestorage.app",messagingSenderId:"413373972853",appId:"1:413373972853:web:564f3aabe9937b6f9f933c",measurementId:"G-RYFDLGP15F"};
+firebase.initializeApp(firebaseConfig);
+const auth=firebase.auth();
+function adminMessage(t){$("adminMessage").textContent=t}
+function openAdmin(){adminMessage("");$("admin").classList.add("open");if(auth.currentUser){showAdminTools()}else{$("adminLogin").hidden=false;$("adminTools").hidden=true}}
 function closeAdmin(){$("admin").classList.remove("open")}
-function savePrices(){for(let p of products){let v=Number(document.getElementById("v_"+p.id).value);if(!v||v<p.min)return alert(p.name+": Demo minimum-এর নিচে দাম দেওয়া যাবে না");p.price=v;localStorage.setItem("sf_"+p.id,v)}render();closeAdmin();alert("Demo দাম সেভ হয়েছে")}
-window.render=render;window.add=add;window.qty=qty;window.openCart=openCart;window.closeCart=closeCart;window.openCheckout=openCheckout;window.closeCheckout=closeCheckout;window.openAdmin=openAdmin;window.closeAdmin=closeAdmin;window.savePrices=savePrices;
+async function adminLogin(e){e.preventDefault();adminMessage("Login হচ্ছে...");try{const cred=await auth.signInWithEmailAndPassword($("adminEmail").value.trim(),$("adminPassword").value);if(!cred.user.emailVerified){await auth.signOut();adminMessage("আগে Gmail verification সম্পন্ন করো, তারপর Login করো।");return}await showAdminTools()}catch(err){adminMessage("Login হয়নি: Gmail/Password যাচাই করো। "+(err.code||""))}}
+async function showAdminTools(){const user=auth.currentUser;if(!user)return;$("adminLogin").hidden=true;$("adminTools").hidden=false;$("adminWho").textContent="Login: "+user.email;adminMessage("পণ্যের তথ্য লোড হচ্ছে...");await loadBackendProducts();$("adminList").innerHTML=products.map(p=>`<div class="adminrow"><span><b>${p.name}</b></span><input id="v_${p.id}" type="number" min="1" value="${p.price}"></div>`).join("");adminMessage("দাম পরিবর্তন করে সংরক্ষণ করো।")}
+async function savePrices(){const user=auth.currentUser;if(!user)return adminMessage("আগে Admin Login করো।");adminMessage("দাম সংরক্ষণ হচ্ছে...");try{const token=await user.getIdToken(true);for(const p of products){const input=$("v_"+p.id);if(!input)continue;const price=Number(input.value);if(!Number.isFinite(price)||price<=0){adminMessage(p.name+": সঠিক দাম দাও।");return}if(price===Number(p.price))continue;const response=await fetch(`${API_BASE}/api/products/${encodeURIComponent(p.id)}/price`,{method:"PATCH",headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},body:JSON.stringify({price})});const result=await response.json().catch(()=>({}));if(!response.ok)throw new Error(result.error||result.message||("HTTP "+response.status));}await loadBackendProducts();await showAdminTools();adminMessage("দাম সফলভাবে Backend-এ সংরক্ষিত হয়েছে।")}catch(err){adminMessage("দাম সেভ হয়নি: "+err.message+". Admin email Render-এর ADMIN_EMAILS তালিকায় আছে কি না যাচাই করো।")}}
+async function adminLogout(){await auth.signOut();$("adminLogin").hidden=false;$("adminTools").hidden=true;$("adminPassword").value="";adminMessage("Logout হয়েছে।")}
+auth.onAuthStateChanged(user=>{if(!user){$("adminLogin").hidden=false;$("adminTools").hidden=true}});
+window.render=render;window.add=add;window.qty=qty;window.openCart=openCart;window.closeCart=closeCart;window.openCheckout=openCheckout;window.closeCheckout=closeCheckout;window.openAdmin=openAdmin;window.closeAdmin=closeAdmin;window.savePrices=savePrices;window.adminLogin=adminLogin;window.adminLogout=adminLogout;
 $("cartPanel").addEventListener("click",e=>{if(e.target===$("cartPanel"))closeCart()});
 render();updateCart();
 
 // Render backend demo API: real orders/payments are not enabled.
 async function loadBackendProducts(){
   try {
-    const response = await fetch("https://smart-fashion-backend.onrender.com/api/products");
+    const response = await fetch(`${API_BASE}/api/products`);
     if (!response.ok) throw new Error("Backend response: " + response.status);
     const result = await response.json();
     if (!Array.isArray(result.data)) throw new Error("Product data format is invalid");
